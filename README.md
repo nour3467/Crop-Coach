@@ -1,0 +1,223 @@
+# CropCoach
+
+Developed by Noureddine Ech-chouky, AgriEdge(c) 2022
+
+## Initialing CropCoach with default parameters:
+
+```python
+import gym
+
+# -- Initializing the environment : with the default parameters
+env = gym.make("CropCoach-v0")
+```
+
+## Examples of How To Use (Alpha Version)
+
+Initiation the environment
+
+```python
+
+import gym
+
+# -- Initializing the environment : with the default parameters
+env = gym.make("CropCoach-v0")
+
+# -- Sample from observation space :
+print(env.observation_space.sample())
+
+# -- Sample from action space :
+print(env.action_space.sample())
+
+```
+
+Simple Rl loop
+
+```python
+
+import gym
+import CropCoach
+
+import shutup
+
+shutup.please()
+
+
+# -- Define the env :
+env = gym.make("CropCoach-v0")
+
+
+
+# -- Test the env : the rewarding mecanism
+episodes = 10
+for episode in range(1, episodes + 1):
+    state = env.reset()
+    done = False
+    score = 0
+
+    while not done:
+        # env.render()
+        action = env.action_space.sample()
+        # action = np.array([1000])
+        print(f"----------- action : {action} -------------\n")
+
+        n_state, reward, done, info = env.step(action)
+        print(f"----------- done : {done} -------------\n")
+        print(f"----------- state : {n_state} -------------\n")
+        print(f"----------- reward : {reward} -------------\n")
+        score += reward
+
+    print(f"Episode --:{episode} Score --:{score}")
+```
+
+Train agents Using stable baselines3 : you need to install stable baselines3 and configure wandb platform, see : [my wofost project](https://github.com/nour3467/Rl-wofost-Agriculture-Recomender)
+
+```python
+
+# -- Importing dependencies :
+import gym
+from CropCoach
+import numpy as np
+import random
+import os
+import time
+from pprint import pprint
+from stable_baselines3.common.callbacks import BaseCallback
+from stable_baselines3 import A2C, PPO
+
+
+def create_list_dir(paths_list):
+    for path in paths_list:
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+
+# logs folder :
+from datetime import datetime
+
+# datetime object containing current date and time
+now = datetime.now().strftime("%a_%b_%Y_%I_%M_%p")
+
+
+Test_Objective = "Default_PPO_vs_A2C_MultiDiscrete"
+
+logs_dir = f"logs_{Test_Objective}_{now}"
+models_dir = f"models_{Test_Objective}_{now}"
+paths_list = [logs_dir, models_dir]
+
+# create the logs and models folders :
+create_list_dir(paths_list)
+
+
+# # -- Init the env  :
+env = gym.make("wofost-v0")
+
+# -- Use weights and biases track training and evaluation :
+import wandb
+from wandb.integration.sb3 import WandbCallback
+
+
+# -- Init wandb configuration :
+config = {"policy_type": "MlpPolicy", "total_timesteps": 10000}
+
+experiment_name = f"{Test_Objective}_{now}"
+
+
+run = wandb.init(
+    name=experiment_name,
+    project="Paper_Experiments",
+    config=config,
+    sync_tensorboard=True,  # auto-upload sb3's tensorboard metrics
+    save_code=True,  # optional
+)
+
+
+TIMESTEPS = config["total_timesteps"]
+
+a2c_agent = A2C("MlpPolicy", env, tensorboard_log=logs_dir, verbose=1)
+
+ppo_agent = PPO("MlpPolicy", env, tensorboard_log=logs_dir, verbose=1)
+
+
+print("Training the A2C agent...")
+a2c_agent.learn(
+    total_timesteps=TIMESTEPS,
+    tb_log_name="A2C",
+    callback=WandbCallback(
+        gradient_save_freq=2,
+        log="all",
+        verbose=1,
+    ),
+)
+a2c_agent.save(f"{models_dir}/a2c_{TIMESTEPS}")
+print("Done training the A2C agent")
+
+print("Training the PPO agent...")
+ppo_agent.learn(
+    total_timesteps=TIMESTEPS,
+    tb_log_name="PPO",
+    callback=WandbCallback(
+        gradient_save_freq=2,
+        log="all",
+        verbose=1,
+    ),
+)
+ppo_agent.save(f"{models_dir}/ppo_{TIMESTEPS}")
+print("Done training the PPO agent")
+
+run.finish()
+
+env.close()
+```
+
+Changing the default parameters :
+
+```python
+
+import gym
+
+
+import shutup
+
+shutup.please()
+
+# get the curent dir :
+current_dir = os.path.dirname(os.path.realpath(__file__)).replace("\\","/")
+# -- Define the env :
+env = WofostEnv(
+    latitude=51.97,
+    longitude=5.67,
+    years_count=1,
+    Costs_dict={"Irrigation": 150, "N": 8,
+                "P": 8.5, "K": 7, "Selling": 2.5},
+    Discount_factors_dict={"Irrigation": 1, "N": 1, "P": 1, "K": 1},
+    year=2019,
+    sample_year=False,
+    files_paths={"soil":current_dir+"/default_data/soil.cab", "site":current_dir+"/default_data/site.cab", "crop":current_dir+"/default_data/crop.cab"},
+    Agromanager_dict={
+        "crop_name": "wheat","crop_variety": "Winter_wheat_101","campaign_start_date": "-01-01","crop_start_type":"emergence","emergence_date": "-03-31","crop_end_type": "harvest","harvest_date": "-08-11", "max_duration": 300
+    },
+)
+
+
+
+# -- Test the env : the rewarding mecanism
+episodes = 10
+for episode in range(1, episodes + 1):
+    state = env.reset()
+    done = False
+    score = 0
+
+    while not done:
+        # env.render()
+        action = env.action_space.sample()
+        # action = np.array([1000])
+        print(f"----------- action : {action} -------------\n")
+
+        n_state, reward, done, info = env.step(action)
+        print(f"----------- done : {done} -------------\n")
+        print(f"----------- state : {n_state} -------------\n")
+        print(f"----------- reward : {reward} -------------\n")
+        score += reward
+
+    print(f"Episode --:{episode} Score --:{score}")
+```
