@@ -9,19 +9,19 @@ with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
 
 VERSION = "0.0.1"
 DESCRIPTION = (
-    "CropCoach : A crop growth simulation model turn into OpenAI Gym environment"
+    "crop_coach : A crop growth simulation model turn into OpenAI Gym environment"
 )
 LONG_DESCRIPTION = "A standard gym environment, built on top of the PCSE library, for the python version of crop growth model WOFOST, to make it easy to train and test latest state of art Reinforcement Learning algorithms."
 
 # Setting up
 setup(
-    name="CropCoach",
+    name="crop_coach",
     version=VERSION,
     author="AgriEdge (Noureddine Ech-chouky)",
     author_email="<noureddine.echchuky@um5r.ac.ma>",
     description=DESCRIPTION,
     package_data={
-        "CropCoach": [
+        "crop_coach": [
             "default_data/*.cab",
             "default_data/*.yaml",
             "default_data/*.conf",

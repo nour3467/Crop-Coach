@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
-Name: CropCoach
+Name: crop-coach
 Version: 0.0.1
-Summary: CropCoach : A crop growth simulation model turn into OpenAI Gym environment
+Summary: crop_coach : A crop growth simulation model turn into OpenAI Gym environment
 Author: AgriEdge (Noureddine Ech-chouky)
 Author-email: <noureddine.echchuky@um5r.ac.ma>
 Keywords: python,Reinforcement learning,gym environment,pcse,crop management,precision agriculture,wofost
@@ -51,23 +51,36 @@ Simple Rl loop
 ```python
 
 import gym
-import gym_wofost
+import CropCoach
 
-# -- Init the env  :
+import shutup
+
+shutup.please()
+
+
+# -- Define the env :
 env = gym.make("CropCoach-v0")
 
-# -- Test the env :
+
+
+# -- Test the env : the rewarding mecanism
 episodes = 10
-for episode in range(1, episodes+1):
+for episode in range(1, episodes + 1):
     state = env.reset()
     done = False
     score = 0
 
     while not done:
-        #env.render()
+        # env.render()
         action = env.action_space.sample()
+        # action = np.array([1000])
+        print(f"----------- action : {action} -------------\n")
+
         n_state, reward, done, info = env.step(action)
-        score+=reward
+        print(f"----------- done : {done} -------------\n")
+        print(f"----------- state : {n_state} -------------\n")
+        print(f"----------- reward : {reward} -------------\n")
+        score += reward
 
     print(f"Episode --:{episode} Score --:{score}")
 ```
@@ -78,7 +91,7 @@ Train agents Using stable baselines3 : you need to install stable baselines3 and
 
 # -- Importing dependencies :
 import gym
-from gym_wofost
+from CropCoach
 import numpy as np
 import random
 import os
