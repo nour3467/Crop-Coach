@@ -7,7 +7,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = "\n" + fh.read()
 
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 DESCRIPTION = (
     "crop_coach : A crop growth simulation model turn into OpenAI Gym environment"
 )
@@ -30,7 +30,7 @@ setup(
     long_description_content_type="text/markdown",
     long_description=long_description,
     packages=find_packages(),
-    install_requires=["gym", "shutup", "traitlets_pcse"],
+    install_requires=["gym", "shutup", "traitlets_pcse", "sqlalchemy", "PyYAML", "pandas", "requests", "xlrd", "scienceplots"],
     keywords=[
         "python",
         "Reinforcement learning",

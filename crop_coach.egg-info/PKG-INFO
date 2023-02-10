@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: crop-coach
-Version: 0.0.2
+Version: 0.0.3
 Summary: crop_coach : A crop growth simulation model turn into OpenAI Gym environment
 Author: AgriEdge (Noureddine Ech-chouky)
 Author-email: <noureddine.echchuky@um5r.ac.ma>
@@ -190,31 +190,38 @@ Changing the default parameters :
 ```python
 
 import gym
-
+import crop_coach
 
 import shutup
 
 shutup.please()
 
-# get the curent dir :
-current_dir = os.path.dirname(os.path.realpath(__file__)).replace("\\","/")
+
+
+
+
+crop_path = "C:/Users/noureddine/Desktop/default_data/crop/crop.cab"
+site_path = "C:/Users/noureddine/Desktop/default_data/site/site.cab"
+soil_path = "C:/Users/noureddine/Desktop/default_data/soil/soil.cab"
+
+
+
+args={
+        "files_paths": {
+            "site":site_path, "soil":soil_path, "crop":crop_path
+            },
+        "sample_year":True,
+        "Agromanager_dict":{
+            "crop_name": "wheat","crop_variety": "Winter_wheat_101","campaign_start_date": "-01-01","crop_start_type":"emergence","emergence_date": "-03-31","crop_end_type": "harvest","harvest_date": "-08-11", "max_duration": 300
+        },
+        "Costs_dict": {"Irrigation": 150, "N": 8, "P": 8.5, "K": 7, "Selling": 2.5},
+        "Discount_factors_dict": {"Irrigation": 1, "N": 1, "P": 1, "K": 1},
+        "year": 2019,
+        "years_count": 1,
+    }
+
 # -- Define the env :
-env = WofostEnv(
-    latitude=51.97,
-    longitude=5.67,
-    years_count=1,
-    Costs_dict={"Irrigation": 150, "N": 8,
-                "P": 8.5, "K": 7, "Selling": 2.5},
-    Discount_factors_dict={"Irrigation": 1, "N": 1, "P": 1, "K": 1},
-    year=2019,
-    sample_year=False,
-    files_paths={"soil":current_dir+"/default_data/soil.cab", "site":current_dir+"/default_data/site.cab", "crop":current_dir+"/default_data/crop.cab"},
-    Agromanager_dict={
-        "crop_name": "wheat","crop_variety": "Winter_wheat_101","campaign_start_date": "-01-01","crop_start_type":"emergence","emergence_date": "-03-31","crop_end_type": "harvest","harvest_date": "-08-11", "max_duration": 300
-    },
-)
-
-
+env = gym.make("CropCoach-v0", **args)
 
 # -- Test the env : the rewarding mecanism
 episodes = 10
@@ -224,7 +231,7 @@ for episode in range(1, episodes + 1):
     score = 0
 
     while not done:
-        # env.render()
+        env.render()
         action = env.action_space.sample()
         # action = np.array([1000])
         print(f"----------- action : {action} -------------\n")
