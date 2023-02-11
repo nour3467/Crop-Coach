@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: crop-coach
-Version: 0.0.3
+Version: 0.0.6
 Summary: crop_coach : A crop growth simulation model turn into OpenAI Gym environment
 Author: AgriEdge (Noureddine Ech-chouky)
 Author-email: <noureddine.echchuky@um5r.ac.ma>

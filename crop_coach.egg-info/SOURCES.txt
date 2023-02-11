@@ -8,6 +8,9 @@ crop_coach.egg-info/requires.txt
 crop_coach.egg-info/top_level.txt
 crop_coach/default_data/WLP_NPK.conf
 crop_coach/default_data/agro.yaml
+crop_coach/default_data/crop.cab
+crop_coach/default_data/site.cab
+crop_coach/default_data/soil.cab
 crop_coach/envs/__init__.py
 crop_coach/envs/actions.py
 crop_coach/envs/models.py
