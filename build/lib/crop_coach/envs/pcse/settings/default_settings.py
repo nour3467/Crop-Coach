@@ -21,12 +21,13 @@ and underscore to the name.
 """
 
 import os as _os
-from crop_coach.envs.pcse import util as _util
+import crop_coach.envs.pcse.util as _util
 
 # base_path = "C:/Users/noureddine/Desktop/crop-coach/crop_coach/envs"
 # PCSE_USER_HOME =  _os.path.join(_util.get_user_home(), base_path+"/pcse")
 # print(f"--------------- {PCSE_USER_HOME} ---------------")
-PCSE_USER_HOME = _os.path.join(_util.get_user_home(), ".pcse")
+# PCSE_USER_HOME = _os.path.join(_util.get_user_home(), ".pcse")
+PCSE_USER_HOME = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..")
 
 # Location for meteo cache files
 METEO_CACHE_DIR = _os.path.join(PCSE_USER_HOME, "meteo_cache")

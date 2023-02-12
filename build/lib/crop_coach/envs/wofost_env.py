@@ -19,6 +19,9 @@ from crop_coach.envs.models import Wofost  #
 from crop_coach.envs.actions import AgroActions
 from crop_coach.envs.reward import calculate_reward
 
+# import scienceplots
+# plt.style.use("science")
+
 # -- To add the external folders modules :
 import sys
 
@@ -162,6 +165,7 @@ class WofostEnv(gym.Env):
         self.Agromanager_dict = Agromanager_dict
 
 
+
         self.sample_year = sample_year
         self.year = year
         self.years_count = years_count
@@ -226,26 +230,6 @@ class WofostEnv(gym.Env):
 
         return year
 
-
-    def set_args(
-        self,
-        args={
-            "sample_year":True,
-            "Agromanager_dict":{
-                "crop_name": "wheat","crop_variety": "Winter_wheat_101","campaign_start_date": "-01-01","crop_start_type":"emergence","emergence_date": "-04-11","crop_end_type": "harvest","harvest_date": "-08-11", "max_duration": 100
-            },
-            "Costs_dict": {"Irrigation": 150, "N": 8, "P": 8.5, "K": 7, "Selling": 2.5},
-            "Discount_factors_dict": {"Irrigation": 1, "N": 1, "P": 1, "K": 1},
-            "year": 2019,
-            "years_count": 1,
-        },
-    ):
-        """
-        Set the args
-        """
-        self.years_count_max = args["years_count"]
-        for key, value in args.items():
-            setattr(self, key, value)
 
     def step(self, action):
         """
@@ -342,6 +326,10 @@ class WofostEnv(gym.Env):
         """
         pass
 
+
+
+
+
     def close(self):
         """
         Close the env
@@ -365,9 +353,9 @@ class WofostEnv(gym.Env):
 #         year=2019,
 #         sample_year=False,
 #         files_paths={"soil":current_dir+"/default_data/soil.cab", "site":current_dir+"/default_data/site.cab", "crop":current_dir+"/default_data/crop.cab"},
-#         Agromanager_dict={
-#             "crop_name": "wheat","crop_variety": "Winter_wheat_101","campaign_start_date": "-01-01","crop_start_type":"emergence","emergence_date": "-03-31","crop_end_type": "harvest","harvest_date": "-08-11", "max_duration": 300
-#         },
+        # Agromanager_dict={
+        #     "crop_name": "wheat","crop_variety": "Winter_wheat_101","campaign_start_date": "-01-01","crop_start_type":"emergence","emergence_date": "-03-31","crop_end_type": "harvest","harvest_date": "-08-11", "max_duration": 300
+        # },
 #     )
 
 #     # -- Test the env : the rewarding mecanism

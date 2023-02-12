@@ -5,7 +5,7 @@ import os, sys
 import importlib
 import inspect
 
-from . import default_settings
+from crop_coach.envs.pcse.settings import default_settings
 
 class  Settings(object):
     """

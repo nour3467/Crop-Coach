@@ -17,10 +17,10 @@ else:
 
 import yaml
 
-from ..base import MultiCropDataProvider
-from .. import exceptions as exc
-from .. import settings
-from ..util import version_tuple
+from crop_coach.envs.pcse.base import MultiCropDataProvider
+import crop_coach.envs.pcse.exceptions  as exc
+from crop_coach.envs.pcse.settings import settings
+from crop_coach.envs.pcse.util import version_tuple
 
 
 class YAMLCropDataProvider(MultiCropDataProvider):
@@ -216,7 +216,8 @@ class YAMLCropDataProvider(MultiCropDataProvider):
         self.current_variety_name = variety_name
 
         # Retrieve parameter name/values from input (ignore description and units)
-        parameters = {k: v[0] for k, v in variety_sets[variety_name].items()}
+        # parameters = {k: v[0] for k, v in variety_sets[variety_name].items()}
+        parameters = {k: v[0] if isinstance(v, (list, tuple)) else v for k, v in variety_sets[variety_name].items()}
         # update internal dict with parameter values for this variety
         self.update(parameters)
 

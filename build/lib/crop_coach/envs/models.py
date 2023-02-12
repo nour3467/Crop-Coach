@@ -15,7 +15,8 @@ from crop_coach.envs.pcse.fileinput import CABOFileReader # , YAMLCropDataProvid
 from crop_coach.envs.pcse.db import NASAPowerWeatherDataProvider
 from crop_coach.envs.pcse.base import ParameterProvider
 from crop_coach.envs.pcse.engine import Engine
-# from pcse.models import Wofost72_WLP_FD, Wofost72_PP
+from crop_coach.envs.pcse.fileinput import YAMLCropDataProvider
+# from crop_coach.envs.pcse.models import Wofost72_WLP_FD, Wofost72_PP
 
 # -- Importing local dependencies :
 # from gym_wofost.envs.actions import AgroActions
@@ -89,19 +90,27 @@ class Wofost:
         else:
             longitude = longitude
 
+        # print(f"\n------------------------------ files_paths : {files_paths} --------------------------\n ")
+
         # -- Check if paths provided are valid :
         cabo_files = ["soil", "site", "crop"]
         data_ = {}
         if files_paths == None:
             for file in cabo_files:
                 data_[file] = read_cabo_file(os.path.join(os.path.dirname(__file__),"..","default_data", file+".cab"))
+            # data_["crop"] = YAMLCropDataProvider(repository = "https://raw.githubusercontent.com/ajwdewit/WOFOST_crop_parameters/master/")
+            # data_["crop"].set_active_crop(crop_name, crop_variety)
+            # print(f"\n------------------ data_['crop'] : {data_['crop']} ------------\n")
+            # data_["crop"].set_active_crop('wheat', 'Winter_wheat_101')
         else:
             for file in cabo_files:
                 if check_file_path(files_paths[file]) :
                     # print(f"\n---------------------- files read succ : {files_paths[file]}----------------------\n")
                     data_[file] = read_cabo_file(files_paths[file])
                 else :
-                    data_[file] = read_cabo_file(os.path.join(os.path.dirname(__file__),"..","default_data", file+".cab"))
+                    data_[file] = read_cabo_file(fpath=os.path.join(os.path.dirname(__file__),"..","default_data", file+".cab"))
+                    # data_["crop"] = YAMLCropDataProvider(repository = "https://raw.githubusercontent.com/ajwdewit/WOFOST_crop_parameters/master/")
+                    # data_["crop"].set_active_crop(crop_name, crop_variety)
 
 
         # # cropd = YAMLCropDataProvider()
@@ -157,7 +166,7 @@ class Wofost:
 
         return (
             # -- Converting the dict to ndarray : (to be used as observations)
-            np.array(list(r[-1].values())),
+            np.array(list(r[0].values())),
             # -- Yield is the last variable in the observations array :
             r[-1]["TWSO"],
         )
