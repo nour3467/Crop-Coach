@@ -7,7 +7,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = "\n" + fh.read()
 
-VERSION = "0.0.9"
+VERSION = "0.0.36"
 DESCRIPTION = (
     "crop_coach : A crop growth simulation model turn into OpenAI Gym environment"
 )
@@ -22,9 +22,11 @@ setup(
     description=DESCRIPTION,
     package_data={
         "crop_coach": [
-            "default_data/*.cab",
-            "default_data/*.yaml",
-            "default_data/*.conf",
+            "default_data/crop/*.cab",
+            "default_data/site/*.cab",
+            "default_data/soil/*.cab",
+            "default_data/agro.yaml",
+            "default_data/WLP_NPK.conf",
         ]
     },
     long_description_content_type="text/markdown",
